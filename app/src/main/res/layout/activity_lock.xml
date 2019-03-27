@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.jevon.passwordbook.viewmodel.LockViewModel" />
+
+    </data>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/lock_background"
+        tools:context=".activity.LockActivity">
+
+        <EditText
+            android:id="@+id/edit_Password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="20dp"
+            android:background="@drawable/background_edit_radius"
+            android:inputType="textPassword"
+            android:text="@={viewModel.psw}"
+            tools:ignore="Autofill,LabelFor" />
+
+        <TextView
+            android:id="@+id/txt_Tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/edit_Password"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="18dp"
+            android:text='@{viewModel.status?"请输入密码或验证指纹":"@string/set"}'
+            android:textColor="@color/colorWhite"
+            android:textSize="23sp" />
+
+
+        <ImageView
+            android:id="@+id/img_Icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/txt_Tips"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="80dp"
+            android:contentDescription="@null"
+            android:src="@drawable/icon96" />
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/edit_Password"
+            android:layout_centerVertical="true"
+            android:onClick="@{()->viewModel.onPositiveClick(viewModel.status)}"
+            android:text="@string/positive" />
+
+
+        <Button
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="18dp"
+            android:onClick="@{()->viewModel.onCancelClick()}"
+            android:text="@string/cancel" />
+
+    </RelativeLayout>
+</layout>

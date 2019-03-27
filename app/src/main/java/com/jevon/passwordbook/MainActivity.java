@@ -1,4 +1,4 @@
-package com.jevon.passwordbook.activity.com.jevon.passwordbook.utils;
+package com.jevon.passwordbook;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
