@@ -11,10 +11,12 @@ import android.support.v4.os.CancellationSignal;
 import android.widget.Toast;
 
 import com.jevon.passwordbook.MainActivity;
-import com.jevon.passwordbook.utils.Jlog;
 
 import java.util.Objects;
 
+/**
+ *
+ */
 public class LockViewModel {
 
     private Activity mContext;
@@ -30,8 +32,13 @@ public class LockViewModel {
         mEditor = mSharedPreferences.edit();
     }
 
+    /**
+     * 获取运行状态
+     * @return 是否已经设置密码
+     */
     public boolean getStatus() {
         boolean status = mSharedPreferences.getBoolean("status", false);
+        //启用指纹
         if (status) {
             FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(mContext);
             cancellationSignal = new CancellationSignal();
@@ -40,6 +47,10 @@ public class LockViewModel {
         return status;
     }
 
+    /**
+     * 确认按钮点击事件
+     * @param statu 运行状态
+     */
     public void onPositiveClick(boolean statu) {
         String password;
         if (psw.get() == null) {
@@ -68,6 +79,9 @@ public class LockViewModel {
         mContext.finish();
     }
 
+    /**
+     * 取消按钮点击事件
+     */
     public void onCancelClick() {
         cancellationSignal.cancel();
         mContext.finish();
@@ -75,6 +89,5 @@ public class LockViewModel {
 
     public void onDestroy() {
         cancellationSignal.cancel();
-        Jlog.d("des");
     }
 }

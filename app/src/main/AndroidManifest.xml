@@ -7,24 +7,26 @@
     <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name=".PasswordApplication"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
+        <activity android:name=".activity.InsertActivity">
+
+        </activity>
         <activity
             android:name=".activity.LockActivity"
-            android:theme="@style/LockStyle">
+            android:theme="@style/LockStyle" />
+        <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".MainActivity" />
-
     </application>
 
 </manifest>

@@ -8,4 +8,12 @@ public class Jlog {
     public static void d(String msg) {
         Log.d(TAG, msg);
     }
+
+    public static void d(int msg) {
+        Log.d(TAG, msg + "");
+    }
+
+    public static void d(long msg) {
+        Log.d(TAG, msg + "");
+    }
 }

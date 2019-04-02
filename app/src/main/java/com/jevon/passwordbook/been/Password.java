@@ -61,4 +61,12 @@ public class Password extends BaseObservable {
         this.note = note;
         notifyPropertyChanged(BR.note);
     }
+
+    public void setNull() {
+        this.name = "";
+        this.id = "";
+        this.psw = "";
+        this.note = "";
+        notifyChange();
+    }
 }
