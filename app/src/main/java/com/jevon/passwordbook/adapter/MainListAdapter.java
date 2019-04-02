@@ -9,16 +9,13 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.jevon.passwordbook.R;
-import com.jevon.passwordbook.listener.RecyclerViewClickListener;
 import com.jevon.passwordbook.been.Password;
 import com.jevon.passwordbook.databinding.ItemPasswordBinding;
-import com.jevon.passwordbook.utils.Jlog;
 import com.jevon.passwordbook.viewmodel.MainViewModel;
 
 import java.util.List;

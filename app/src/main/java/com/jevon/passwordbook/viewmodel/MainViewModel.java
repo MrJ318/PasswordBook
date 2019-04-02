@@ -2,7 +2,6 @@ package com.jevon.passwordbook.viewmodel;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.widget.Toast;
 
 import com.jevon.passwordbook.activity.InsertActivity;
@@ -21,6 +20,7 @@ public class MainViewModel {
     private Activity context;
     private MainModel mainModel;
     private List<Password> list;
+    private MainListAdapter adapter;
 
     public MainViewModel(Activity activity) {
         context = activity;
@@ -34,8 +34,14 @@ public class MainViewModel {
      */
     public MainListAdapter getAdapter() {
         list = mainModel.getAllData();
-        MainListAdapter adapter = new MainListAdapter(this, list);
+        adapter = new MainListAdapter(this, list);
         return adapter;
+    }
+
+    //    刷新数据
+    public void refreshData() {
+        list = mainModel.getAllData();
+        adapter.notifyDataSetChanged();
     }
 
     /**

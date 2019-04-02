@@ -1,12 +1,12 @@
 package com.jevon.passwordbook.activity;
 
 import android.databinding.DataBindingUtil;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
+import android.view.MenuItem;
 
 import com.jevon.passwordbook.R;
-import com.jevon.passwordbook.databinding.ActivityInsertBinding;
 import com.jevon.passwordbook.databinding.LayoutPasswordDetailBinding;
 import com.jevon.passwordbook.viewmodel.InsertVM;
 
@@ -19,7 +19,7 @@ public class InsertActivity extends AppCompatActivity {
 
         initBar(binding);
 
-        InsertVM insertVM = new InsertVM(this);
+        InsertVM insertVM = new InsertVM();
         binding.setItem(insertVM.password);
         binding.setInsertvm(insertVM);
 
@@ -30,7 +30,18 @@ public class InsertActivity extends AppCompatActivity {
         setSupportActionBar(binding.toolbarDetail);
         //设置ToolBar左侧的图标
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setTitle("添加");
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle("添加");
+        }
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            this.finish();
+        }
+        return true;
     }
 }

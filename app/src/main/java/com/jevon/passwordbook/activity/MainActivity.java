@@ -1,4 +1,4 @@
-package com.jevon.passwordbook;
+package com.jevon.passwordbook.activity;
 
 import android.databinding.DataBindingUtil;
 import android.support.v4.widget.DrawerLayout;
@@ -9,20 +9,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
 
-import com.jevon.passwordbook.adapter.MainListAdapter;
+import com.jevon.passwordbook.R;
 import com.jevon.passwordbook.databinding.ActivityMainBinding;
-import com.jevon.passwordbook.listener.RecyclerViewClickListener;
-import com.jevon.passwordbook.utils.Jlog;
 import com.jevon.passwordbook.viewmodel.MainViewModel;
 
 
 public class MainActivity extends AppCompatActivity {
 
     private DrawerLayout drawerLayout;
-    private RecyclerView recyclerView;
     private MainViewModel viewModel;
+    private int startTag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,17 +30,16 @@ public class MainActivity extends AppCompatActivity {
         mainBinding.setViewmodel(viewModel);
 
         /* recyclerView设置 */
-        recyclerView = mainBinding.recyclerview;
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        MainListAdapter adapter = viewModel.getAdapter();
-//        recyclerView.setAdapter(adapter);
+        mainBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
 
         //设置Toolbar
         setSupportActionBar(mainBinding.toolbarMain);
         //设置ToolBar左侧的图标
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setHomeAsUpIndicator(R.drawable.menu);
+        if (actionBar!=null){
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setHomeAsUpIndicator(R.drawable.menu);
+        }
 
         drawerLayout = mainBinding.drawerlayout;
     }
@@ -56,5 +52,14 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
         return true;
+    }
+
+    @Override
+    protected void onStart() {
+        if (startTag > 0) {
+            viewModel.refreshData();
+        }
+        startTag++;
+        super.onStart();
     }
 }

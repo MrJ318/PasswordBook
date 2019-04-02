@@ -1,7 +1,7 @@
 package com.jevon.passwordbook.viewmodel;
 
-import android.app.Activity;
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.databinding.BindingAdapter;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -18,17 +18,18 @@ import com.jevon.passwordbook.utils.DatabaseHelper;
  */
 public class InsertVM {
 
-    private Activity activity;
     public final Password password = new Password();
-
-    public InsertVM(Activity activity) {
-        this.activity = activity;
-    }
 
     //    保存按钮点击事件
     public void onClick() {
-        Toast.makeText(PasswordApplication.getContext(), "" + password.getName(), Toast.LENGTH_SHORT).show();
         DatabaseHelper databaseHelper = new DatabaseHelper(PasswordApplication.getContext());
+        Cursor cursor = databaseHelper.query(password.getName());
+
+        if (cursor.getCount() != 0) {
+            Toast.makeText(PasswordApplication.getContext(), "该名称已存在！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", password.getName());
         contentValues.put("id", password.getId());
@@ -53,11 +54,5 @@ public class InsertVM {
                 .buildRound(imageText.substring(0, 1), colorGenerator.getColor(imageText));
         img.setImageDrawable(textDrawable);
     }
-
-    //    生成随机密码
-    public void generatePwd() {
-
-    }
-
 
 }

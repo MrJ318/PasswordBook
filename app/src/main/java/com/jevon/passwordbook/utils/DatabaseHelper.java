@@ -44,11 +44,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public int delete(String name) {
 //        db.execSQL("delete from password where name='" + name + "'");
-        return db.delete(TABLE_NAME, "name=" + name, null);
+        return db.delete(TABLE_NAME, "name=?", new String[]{name});
     }
 
     public int updata(ContentValues contentValues, String name) {
-        return db.update(TABLE_NAME, contentValues, "name=" + name, null);
+        return db.update(TABLE_NAME, contentValues, "name=?", new String[]{name});
     }
 
     public Cursor query() {
@@ -56,6 +56,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     public Cursor query(String name) {
-        return db.query(TABLE_NAME, null, "name=" + name, null, null, null, null);
+        return db.query(TABLE_NAME, null, "name=?", new String[]{name}, null, null, null);
     }
 }

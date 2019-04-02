@@ -7,7 +7,7 @@ import android.os.Vibrator;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.widget.Toast;
 
-import com.jevon.passwordbook.MainActivity;
+import com.jevon.passwordbook.activity.MainActivity;
 
 public class FingerCallback extends FingerprintManagerCompat.AuthenticationCallback {
 
