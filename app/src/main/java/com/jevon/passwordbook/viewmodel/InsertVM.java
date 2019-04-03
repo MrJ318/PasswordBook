@@ -19,6 +19,7 @@ import com.jevon.passwordbook.utils.DatabaseHelper;
 public class InsertVM {
 
     public final Password password = new Password();
+    
 
     //    保存按钮点击事件
     public void onClick() {

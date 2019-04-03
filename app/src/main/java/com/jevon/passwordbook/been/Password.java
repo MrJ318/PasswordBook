@@ -5,7 +5,9 @@ import android.databinding.Bindable;
 
 import com.android.databinding.library.baseAdapters.BR;
 
-public class Password extends BaseObservable {
+import java.io.Serializable;
+
+public class Password extends BaseObservable implements Serializable {
 
     private String name;
     private String id;

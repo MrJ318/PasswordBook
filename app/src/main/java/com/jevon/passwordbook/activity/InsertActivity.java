@@ -7,8 +7,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.jevon.passwordbook.R;
+import com.jevon.passwordbook.been.Password;
 import com.jevon.passwordbook.databinding.LayoutPasswordDetailBinding;
 import com.jevon.passwordbook.viewmodel.InsertVM;
+import com.jevon.passwordbook.viewmodel.PasswordDetailVM;
 
 public class InsertActivity extends AppCompatActivity {
 
@@ -19,9 +21,11 @@ public class InsertActivity extends AppCompatActivity {
 
         initBar(binding);
 
-        InsertVM insertVM = new InsertVM();
-        binding.setItem(insertVM.password);
-        binding.setInsertvm(insertVM);
+        PasswordDetailVM vm = PasswordDetailVM.getInstance();
+        vm.setActivity(PasswordDetailVM.ACTIVITY_INSERT);
+        vm.setPassword(new Password());
+        binding.setItem(vm.getPassword());
+        binding.setVm(vm);
 
     }
 

@@ -47,7 +47,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.delete(TABLE_NAME, "name=?", new String[]{name});
     }
 
-    public int updata(ContentValues contentValues, String name) {
+    public int update(ContentValues contentValues, String name) {
         return db.update(TABLE_NAME, contentValues, "name=?", new String[]{name});
     }
 
