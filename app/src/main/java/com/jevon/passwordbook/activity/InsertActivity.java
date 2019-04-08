@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import com.jevon.passwordbook.R;
 import com.jevon.passwordbook.been.Password;
 import com.jevon.passwordbook.databinding.LayoutPasswordDetailBinding;
-import com.jevon.passwordbook.viewmodel.InsertVM;
 import com.jevon.passwordbook.viewmodel.PasswordDetailVM;
 
 public class InsertActivity extends AppCompatActivity {

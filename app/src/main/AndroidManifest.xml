@@ -13,12 +13,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".activity.InsertActivity">
+
+        <activity android:name=".activity.TestActivity">
 
         </activity>
         <activity
             android:name=".activity.LockActivity"
-            android:theme="@style/LockStyle" />
+            android:theme="@style/LockStyle">
+
+        </activity>
+
         <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +30,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".activity.InsertActivity" />
+            
         <activity android:name=".activity.DetailActivity" />
 
     </application>

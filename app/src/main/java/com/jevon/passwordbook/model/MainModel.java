@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 
 import com.jevon.passwordbook.been.Password;
+import com.jevon.passwordbook.utils.AesEncryptionUtils;
 import com.jevon.passwordbook.utils.DatabaseHelper;
 
 import java.util.ArrayList;
@@ -29,9 +30,11 @@ public class MainModel {
 
         Cursor cursor = databaseHelper.query();
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {
+            String key = cursor.getString(cursor.getColumnIndex("str_key"));
+            String securePsw = cursor.getString(cursor.getColumnIndex("password"));
+            String psw = AesEncryptionUtils.decrypt(key, securePsw);
             String name = cursor.getString(cursor.getColumnIndex("name"));
             String id = cursor.getString(cursor.getColumnIndex("id"));
-            String psw = cursor.getString(cursor.getColumnIndex("password"));
             String note = cursor.getString(cursor.getColumnIndex("note"));
             list.add(new Password(name, id, psw, note));
         }

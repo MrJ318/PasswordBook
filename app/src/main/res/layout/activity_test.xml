@@ -9,24 +9,51 @@
             type="com.jevon.passwordbook.activity.TestActivity" />
     </data>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:orientation="vertical"
         tools:context=".activity.TestActivity">
 
-        <LinearLayout
-            android:id="@+id/ll1"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_centerVertical="true"
-            android:background="@color/colorLockBackground"
-            android:onClick="@{()->activity.onClick()}"
-            android:orientation="horizontal" />
-
-        <Button
+        <EditText
+            android:id="@+id/editText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/cancel" />
+            android:layout_alignParentBottom="true"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name" />
 
-    </RelativeLayout>
+        <TextView
+            android:id="@+id/txt1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="密钥：" />
+
+        <TextView
+            android:id="@+id/txt2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="密文：" />
+
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="生成密钥" />
+
+        <Button
+            android:id="@+id/btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="加密" />
+
+        <Button
+            android:id="@+id/btn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="解密" />
+
+
+    </LinearLayout>
 </layout>

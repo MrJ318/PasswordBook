@@ -19,6 +19,7 @@ import com.amulyakhare.textdrawable.util.ColorGenerator;
 import com.jevon.passwordbook.PasswordApplication;
 import com.jevon.passwordbook.R;
 import com.jevon.passwordbook.been.Password;
+import com.jevon.passwordbook.utils.AesEncryptionUtils;
 import com.jevon.passwordbook.utils.DatabaseHelper;
 
 /**
@@ -107,11 +108,13 @@ public class PasswordDetailVM {
             Toast.makeText(context, "该名称已存在！", Toast.LENGTH_SHORT).show();
             return;
         }
+        String key = AesEncryptionUtils.createKey(password.getPsw());
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", password.getName());
         contentValues.put("id", password.getId());
-        contentValues.put("password", password.getPsw());
+        contentValues.put("password", AesEncryptionUtils.encrypt(key, password.getPsw()));
         contentValues.put("note", password.getNote());
+        contentValues.put("str_key", key);
         if (databaseHelper.insert(contentValues) > 0) {
             password.setNull();
             Toast.makeText(context, "保存成功！", Toast.LENGTH_SHORT).show();
@@ -122,11 +125,13 @@ public class PasswordDetailVM {
 
     //    保存按钮--更新数据
     private void updateData() {
+        String key = AesEncryptionUtils.createKey(password.getPsw());
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", password.getName());
         contentValues.put("id", password.getId());
-        contentValues.put("password", password.getPsw());
+        contentValues.put("password", AesEncryptionUtils.encrypt(key, password.getPsw()));
         contentValues.put("note", password.getNote());
+        contentValues.put("str_key", key);
         if (databaseHelper.update(contentValues, password.getName()) > 0) {
             setActivity(ACTIVITY_DETAIL);
             Toast.makeText(context, "修改成功！", Toast.LENGTH_SHORT).show();
