@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private final String TABLE_NAME = "password";
+    public static final String TABLE_NAME = "Password";
 
     private SQLiteDatabase db;
 
@@ -37,9 +37,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return db.insert(TABLE_NAME, null, contentValues);
     }
 
-    public int delete() {
+    public void delete() {
 //        db.execSQL("delete from password");
-        return db.delete(TABLE_NAME, null, null);
+        db.delete(TABLE_NAME, null, null);
     }
 
     public int delete(String name) {

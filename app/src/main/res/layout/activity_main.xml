@@ -135,7 +135,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_selector"
                 android:gravity="center_vertical"
-                android:onClick="@{()->viewmodel.backups()}"
+                android:onClick="@{(v)->viewmodel.requestPermission(v)}"
                 android:orientation="horizontal"
                 android:padding="@dimen/activity_horizontal_margin">
 
@@ -162,7 +162,7 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/button_selector"
                 android:gravity="center_vertical"
-                android:onClick="@{()->viewmodel.imports()}"
+                android:onClick="@{(v)->viewmodel.requestPermission(v)}"
                 android:orientation="horizontal"
                 android:padding="@dimen/activity_horizontal_margin">
 
