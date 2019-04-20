@@ -88,7 +88,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:text="https://github.com/MrJ318/PasswordBook/app/release" />
+                android:text="https://github.com/MrJ318/PasswordBook/tree/master/app/release" />
 
 
         </LinearLayout>
