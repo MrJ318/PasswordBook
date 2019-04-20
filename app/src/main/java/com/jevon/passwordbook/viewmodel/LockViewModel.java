@@ -34,6 +34,7 @@ public class LockViewModel {
 
     /**
      * 获取运行状态
+     *
      * @return 是否已经设置密码
      */
     public boolean getStatus() {
@@ -49,6 +50,7 @@ public class LockViewModel {
 
     /**
      * 确认按钮点击事件
+     *
      * @param statu 运行状态
      */
     public void onPositiveClick(boolean statu) {
@@ -75,7 +77,7 @@ public class LockViewModel {
             }
         }
         mContext.startActivity(new Intent(mContext, MainActivity.class));
-        cancellationSignal.cancel();
+        onDestroy();
         mContext.finish();
     }
 
@@ -83,11 +85,13 @@ public class LockViewModel {
      * 取消按钮点击事件
      */
     public void onCancelClick() {
-        cancellationSignal.cancel();
+        onDestroy();
         mContext.finish();
     }
 
     public void onDestroy() {
-        cancellationSignal.cancel();
+        if (cancellationSignal != null) {
+            cancellationSignal.cancel();
+        }
     }
 }

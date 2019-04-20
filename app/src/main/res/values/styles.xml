@@ -12,4 +12,9 @@
         <item name="colorPrimaryDark">@color/colorLockBackground</item>
     </style>
 
+    <style name="DialogTheme" parent="Base.Theme.AppCompat.Light.Dialog">
+        <!--弹出软键盘-->
+        <item name="android:windowSoftInputMode">stateVisible</item>
+    </style>
+
 </resources>

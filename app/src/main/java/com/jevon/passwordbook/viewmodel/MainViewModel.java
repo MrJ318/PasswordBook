@@ -7,11 +7,12 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.databinding.ObservableField;
-import android.os.Environment;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.jevon.passwordbook.R;
+import com.jevon.passwordbook.activity.AboutActivity;
 import com.jevon.passwordbook.activity.DetailActivity;
 import com.jevon.passwordbook.activity.InsertActivity;
 import com.jevon.passwordbook.adapter.MainListAdapter;
@@ -19,6 +20,8 @@ import com.jevon.passwordbook.been.Password;
 import com.jevon.passwordbook.model.MainModel;
 import com.jevon.passwordbook.utils.DatabaseHelper;
 import com.jevon.passwordbook.utils.FileUtils;
+import com.jevon.passwordbook.utils.Jlog;
+import com.jevon.passwordbook.utils.SharedPreferenceUtils;
 import com.leon.lfilepickerlibrary.LFilePicker;
 import com.leon.lfilepickerlibrary.utils.Constant;
 
@@ -43,6 +46,8 @@ public class MainViewModel {
     private MainListAdapter adapter;
     public final ObservableField<Integer> listSize = new ObservableField<>();
 
+    private AlertDialog modifyDialog;
+
     public MainViewModel(Activity activity) {
         this.activity = activity;
         mainModel = new MainModel(this.activity);
@@ -56,6 +61,7 @@ public class MainViewModel {
     public MainListAdapter getAdapter() {
         list = mainModel.getAllData();
         adapter = new MainListAdapter(this, list);
+        listSize.set(list.size());
         return adapter;
     }
 
@@ -127,7 +133,6 @@ public class MainViewModel {
         filePicker.withActivity(activity);
         filePicker.withRequestCode(requestNum);
         filePicker.withIconStyle(Constant.ICON_STYLE_BLUE);//图标风格
-        filePicker.withStartPath("" + Environment.getExternalStorageDirectory());//指定初始显示路径
         filePicker.withMutilyMode(false);//是否多选
 
         if (requestNum == REQUESTCODE_CHOOESFILE_FILE) {
@@ -164,12 +169,66 @@ public class MainViewModel {
 
     //    修改密码
     public void change() {
-        Toast.makeText(activity, "5", Toast.LENGTH_SHORT).show();
+        Toast.makeText(activity, "该功能尚未实现，敬请期待", Toast.LENGTH_SHORT).show();
+//        final AlertDialog.Builder builder = new AlertDialog.Builder(activity, R.style.DialogTheme);
+//        @SuppressLint("InflateParams")
+//        View view = LayoutInflater.from(activity).inflate(R.layout.dialog_input_password, null);
+//        final EditText editText = view.findViewById(R.id.edit_inout_password);
+//        //edittext获取焦点
+//        editText.requestFocus();
+//        builder.setMessage("请输入原密码");
+//        builder.setView(view);
+//        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//                modifyPassword(editText);
+//            }
+//        });
+//        builder.setNegativeButton("取消", null);
+//        modifyDialog = builder.show();
     }
+
 
     //    关于
     public void about() {
-        Toast.makeText(activity, "6", Toast.LENGTH_SHORT).show();
+        activity.startActivity(new Intent(activity, AboutActivity.class));
     }
 
+
+    int state = 0;
+
+    private void modifyPassword(EditText editText) {
+        SharedPreferenceUtils sharedPreferenceUtils = new SharedPreferenceUtils(activity);
+        String newPsw = "";
+        switch (state) {
+            case 0:
+                Jlog.d(sharedPreferenceUtils.getPassword() + "***");
+                if (editText.getText().toString().trim().equals(sharedPreferenceUtils.getPassword())) {
+                    modifyDialog.setMessage("请输入新密码");
+                    editText.setText("");
+                    state++;
+                } else {
+                    Toast.makeText(activity, "密码错误！", Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case 1:
+                newPsw = editText.getText().toString().trim();
+                state++;
+                modifyDialog.setMessage("请确认新密码");
+                editText.setText("");
+                break;
+            case 2:
+                String psw = editText.getText().toString().trim();
+                if (psw.equals(newPsw)) {
+                    sharedPreferenceUtils.putPassword(psw);
+                    modifyDialog.dismiss();
+                    Toast.makeText(activity, "密码重置成功，请牢记！", Toast.LENGTH_SHORT).show();
+                    state = 0;
+                } else {
+                    Toast.makeText(activity, "密码不一致，请重新输入！", Toast.LENGTH_SHORT).show();
+                    editText.setText("");
+                }
+                break;
+        }
+    }
 }

@@ -13,4 +13,7 @@
     <string name="password_id">账号</string>
     <string name="password_note">备注</string>
 
+    <string name="shuoming">软件说明：\n本软件用于存储各类账号密码,使用方便，管理简单\n</string>
+    <string name="usenotice">注意事项：\n本软件适合存储各种网站、论坛的账号密码，请不要存储网银、支付宝等重要密码</string>
+
 </resources>

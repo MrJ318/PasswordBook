@@ -35,7 +35,7 @@
             android:layout_above="@id/edit_Password"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="18dp"
-            android:text='@{viewModel.status?"请输入密码或验证指纹":"@string/set"}'
+            android:text='@{viewModel.status?"请输入密码或验证指纹":"第一次启动程序，请先设置密码"}'
             android:textColor="@color/colorWhite"
             android:textSize="23sp" />
 
