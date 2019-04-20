@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Toast;
 
 import com.jevon.passwordbook.R;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeAsUpIndicator(R.drawable.menu);
+            actionBar.setTitle("密码本（测试版）");
         }
 
         drawerLayout = mainBinding.drawerlayout;
