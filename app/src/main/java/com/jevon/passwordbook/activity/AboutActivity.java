@@ -25,18 +25,18 @@ public class AboutActivity extends AppCompatActivity {
         //设置Toolbar
         setSupportActionBar(binding.toolbarAbout);
         //设置ToolBar左侧的图标
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setDisplayHomeAsUpEnabled(true);
-            actionBar.setTitle("添加");
-        }
+//        ActionBar actionBar = getSupportActionBar();
+//        if (actionBar != null) {
+//            actionBar.setDisplayHomeAsUpEnabled(true);
+//        }
 
         //设置显示版本号
         try {
             PackageInfo pack = this.getPackageManager().getPackageInfo(this.getPackageName(), 0);
             String versonname = pack.versionName;
-            binding.textVersion.setText("V" + versonname);
+            binding.textVersion.setText(String.format(getResources().getString(R.string.version), versonname));
         } catch (PackageManager.NameNotFoundException e) {
+            binding.textVersion.setVisibility(View.INVISIBLE);
             e.printStackTrace();
         }
 

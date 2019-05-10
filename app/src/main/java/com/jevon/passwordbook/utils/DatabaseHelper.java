@@ -58,4 +58,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public Cursor query(String name) {
         return db.query(TABLE_NAME, null, "name=?", new String[]{name}, null, null, null);
     }
+
+
+    public boolean isOpen() {
+        return isOpen();
+    }
+
+    public void close() {
+        db.close();
+    }
 }

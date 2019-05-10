@@ -42,6 +42,17 @@ public class FileUtils {
         }
     }
 
+    public static void deleteCache(String path) {
+        File shm = new File(path + "-shm");
+        File wal = new File(path + "-wal");
+        if (shm.exists()) {
+            shm.delete();
+        }
+        if (wal.exists()) {
+            wal.delete();
+        }
+    }
+
     private static String getDate() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HHmmss");
         Date date = new Date(System.currentTimeMillis());

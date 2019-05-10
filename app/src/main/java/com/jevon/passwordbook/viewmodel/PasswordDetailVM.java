@@ -55,8 +55,7 @@ public class PasswordDetailVM {
         context = PasswordApplication.getContext();
         //剪贴板服务
         manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        //数据库连接
-        databaseHelper = new DatabaseHelper(context);
+
     }
 
     //    单例工厂
@@ -103,6 +102,7 @@ public class PasswordDetailVM {
     //    保存按钮--新增数据
     private void insertData() {
 
+        databaseHelper = new DatabaseHelper(context);
         Cursor cursor = databaseHelper.query(password.getName());
         if (cursor.getCount() != 0) {
             Toast.makeText(context, "该名称已存在！", Toast.LENGTH_SHORT).show();
@@ -121,10 +121,12 @@ public class PasswordDetailVM {
         } else {
             Toast.makeText(context, "保存失败，请重试！", Toast.LENGTH_SHORT).show();
         }
+        databaseHelper.close();
     }
 
     //    保存按钮--更新数据
     private void updateData() {
+
         String key = AesEncryptionUtils.createKey(password.getPsw());
         ContentValues contentValues = new ContentValues();
         contentValues.put("name", password.getName());
@@ -132,12 +134,14 @@ public class PasswordDetailVM {
         contentValues.put("password", AesEncryptionUtils.encrypt(key, password.getPsw()));
         contentValues.put("note", password.getNote());
         contentValues.put("str_key", key);
+        databaseHelper = new DatabaseHelper(context);
         if (databaseHelper.update(contentValues, password.getName()) > 0) {
             setActivity(ACTIVITY_DETAIL);
             Toast.makeText(context, "修改成功！", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(context, "修改失败，请重试！", Toast.LENGTH_SHORT).show();
         }
+        databaseHelper.close();
     }
 
     //    账号密码复制
@@ -164,7 +168,10 @@ public class PasswordDetailVM {
 
     //    删除数据
     public int deleteData() {
-        return databaseHelper.delete(password.getName());
+        databaseHelper = new DatabaseHelper(context);
+        int result = databaseHelper.delete(password.getName());
+        databaseHelper.close();
+        return result;
     }
 
     //    设置文字头像

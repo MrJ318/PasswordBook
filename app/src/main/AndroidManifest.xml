@@ -10,13 +10,12 @@
 
     <application
         android:name=".PasswordApplication"
-        android:icon="@mipmap/icon"
+        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
-        <activity android:name=".activity.AboutActivity"></activity>
-        <activity android:name=".activity.TestActivity"></activity>
+
         <activity
             android:name=".activity.LockActivity"
             android:theme="@style/LockStyle">
@@ -26,11 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.MainActivity">
 
-        </activity>
-        <activity android:name=".activity.InsertActivity" />
+        <activity android:name=".activity.MainActivity" />
+
         <activity android:name=".activity.DetailActivity" />
+
+        <activity android:name=".activity.InsertActivity" />
+
+        <activity android:name=".activity.AboutActivity" />
     </application>
 
 </manifest>
