@@ -8,24 +8,22 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.SearchView;
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toast;
 
 import com.jevon.passwordbook.R;
 import com.jevon.passwordbook.databinding.ActivityMainBinding;
-import com.jevon.passwordbook.listener.MainListener;
 import com.jevon.passwordbook.utils.Jtoast;
 import com.jevon.passwordbook.viewmodel.MainViewModel;
 
 
-public class MainActivity extends AppCompatActivity implements MainListener {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener, SearchView.OnQueryTextListener {
 
+    private ActivityMainBinding mainBinding;
     private DrawerLayout drawerLayout;
     private MainViewModel viewModel;
     private SearchView searchView;
@@ -33,22 +31,63 @@ public class MainActivity extends AppCompatActivity implements MainListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityMainBinding mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+
+        initView();
+    }
+
+    private void initView() {
 
         viewModel = new MainViewModel(this);
-        mainBinding.setViewmodel(viewModel);
-
-        /* recyclerView设置 */
-        mainBinding.recyclerview.setLayoutManager(new LinearLayoutManager(this));
-
-        searchView = mainBinding.searchView;
-        searchView.setOnQueryTextListener(viewModel);
-
-
-        //设置Toolbar
+        mainBinding.setVm(viewModel);
+        //Toolbar
         setSupportActionBar(mainBinding.toolbarMain);
+        // RecyclerView
+        mainBinding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        // SearchView
+        searchView = mainBinding.searchView;
+        searchView.setOnQueryTextListener(this);
+
+        // SwipeRefreshLayout
+        mainBinding.layoutRefresh.setOnRefreshListener(this);
+
+        // DrawerLayout
         drawerLayout = mainBinding.drawerlayout;
+    }
+
+    /**
+     * 下拉刷新
+     */
+    @Override
+    public void onRefresh() {
+        viewModel.refreshData();
+        mainBinding.layoutRefresh.setRefreshing(false);
+        Jtoast.show("刷新成功！");
+    }
+
+    /**
+     * 搜索框文本提交
+     *
+     * @param query 搜索文本
+     * @return true
+     */
+    @Override
+    public boolean onQueryTextSubmit(String query) {
+        viewModel.searchByName(query);
+        return true;
+    }
+
+    /**
+     * 搜索框文本改变
+     *
+     * @param newText 新文本
+     * @return true
+     */
+    @Override
+    public boolean onQueryTextChange(String newText) {
+        viewModel.searchByName(newText);
+        return true;
     }
 
     @Override
@@ -59,10 +98,12 @@ public class MainActivity extends AppCompatActivity implements MainListener {
         return true;
     }
 
+
     @Override
     protected void onRestart() {
         viewModel.refreshData();
         searchView.clearFocus();
+        //可以收起SearchView视图
         searchView.onActionViewCollapsed();
         drawerLayout.closeDrawers();
         super.onRestart();
@@ -77,14 +118,14 @@ public class MainActivity extends AppCompatActivity implements MainListener {
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     viewModel.chooesFile(MainViewModel.REQUESTCODE_CHOOESFILE_DIR);
                 } else {
-                    Toast.makeText(this, "权限被拒绝！", Toast.LENGTH_SHORT).show();
+                    Jtoast.show("权限被拒绝！");
                 }
                 break;
             case MainViewModel.REQUESTCODE_PERMISSION_IMPORTS:
                 if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     viewModel.chooesFile(MainViewModel.REQUESTCODE_CHOOESFILE_FILE);
                 } else {
-                    Toast.makeText(this, "权限被拒绝！", Toast.LENGTH_SHORT).show();
+                    Jtoast.show("权限被拒绝！");
                 }
                 break;
         }
@@ -107,9 +148,5 @@ public class MainActivity extends AppCompatActivity implements MainListener {
         }
     }
 
-    @Override
-    public void onOperationComplete(String msg) {
-        drawerLayout.closeDrawers();
-        Jtoast.show(msg);
-    }
+
 }

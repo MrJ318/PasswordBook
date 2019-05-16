@@ -14,25 +14,25 @@ public class SharedPreferenceUtils {
 
     public SharedPreferenceUtils(Context context) {
         sharedPreferences = context.getSharedPreferences("passwordbook", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-    }
-
-
-    public void putPassword(String password) {
-        editor.putString("password", password);
-        editor.commit();
-    }
-
-    public void putStatus(boolean statu) {
-        editor.putBoolean("status", statu);
-        editor.commit();
     }
 
     public String getPassword() {
         return sharedPreferences.getString("password", "");
     }
 
-    public boolean getStatus(String password) {
+    public void putPassword(String password) {
+        editor = sharedPreferences.edit();
+        editor.putString("password", password);
+        editor.apply();
+    }
+
+    public boolean getStatus() {
         return sharedPreferences.getBoolean("status", false);
+    }
+
+    public void putStatus(boolean status) {
+        editor = sharedPreferences.edit();
+        editor.putBoolean("status", status);
+        editor.apply();
     }
 }

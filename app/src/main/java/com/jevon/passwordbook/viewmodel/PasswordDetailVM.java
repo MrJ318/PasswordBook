@@ -16,11 +16,11 @@ import android.widget.Toast;
 
 import com.amulyakhare.textdrawable.TextDrawable;
 import com.amulyakhare.textdrawable.util.ColorGenerator;
-import com.jevon.passwordbook.PasswordApplication;
 import com.jevon.passwordbook.R;
 import com.jevon.passwordbook.been.Password;
 import com.jevon.passwordbook.utils.AesEncryptionUtils;
 import com.jevon.passwordbook.utils.DatabaseHelper;
+import com.jevon.passwordbook.utils.Jtoast;
 
 /**
  * @Author: Mr.J
@@ -51,17 +51,16 @@ public class PasswordDetailVM {
 
 
     //    构造器
-    private PasswordDetailVM() {
-        context = PasswordApplication.getContext();
+    private PasswordDetailVM(Context context) {
+        this.context = context;
         //剪贴板服务
         manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-
     }
 
     //    单例工厂
-    public static PasswordDetailVM getInstance() {
+    public static PasswordDetailVM getInstance(Context context) {
         if (passwordDetailVM == null) {
-            passwordDetailVM = new PasswordDetailVM();
+            passwordDetailVM = new PasswordDetailVM(context);
         }
         return passwordDetailVM;
     }
@@ -102,7 +101,11 @@ public class PasswordDetailVM {
     //    保存按钮--新增数据
     private void insertData() {
 
-        databaseHelper = new DatabaseHelper(context);
+        databaseHelper = new DatabaseHelper();
+        if (password==null||password.getName()==null||password.getName().length()<1){
+            Jtoast.show("请输入名称");
+            return;
+        }
         Cursor cursor = databaseHelper.query(password.getName());
         if (cursor.getCount() != 0) {
             Toast.makeText(context, "该名称已存在！", Toast.LENGTH_SHORT).show();
@@ -134,7 +137,7 @@ public class PasswordDetailVM {
         contentValues.put("password", AesEncryptionUtils.encrypt(key, password.getPsw()));
         contentValues.put("note", password.getNote());
         contentValues.put("str_key", key);
-        databaseHelper = new DatabaseHelper(context);
+        databaseHelper = new DatabaseHelper();
         if (databaseHelper.update(contentValues, password.getName()) > 0) {
             setActivity(ACTIVITY_DETAIL);
             Toast.makeText(context, "修改成功！", Toast.LENGTH_SHORT).show();
@@ -168,7 +171,7 @@ public class PasswordDetailVM {
 
     //    删除数据
     public int deleteData() {
-        databaseHelper = new DatabaseHelper(context);
+        databaseHelper = new DatabaseHelper();
         int result = databaseHelper.delete(password.getName());
         databaseHelper.close();
         return result;

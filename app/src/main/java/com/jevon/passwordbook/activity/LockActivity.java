@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.jevon.passwordbook.R;
 import com.jevon.passwordbook.databinding.ActivityLockBinding;
+import com.jevon.passwordbook.utils.Jlog;
 import com.jevon.passwordbook.viewmodel.LockViewModel;
 
 public class LockActivity extends AppCompatActivity {
@@ -19,6 +20,11 @@ public class LockActivity extends AppCompatActivity {
 
         viewModel = new LockViewModel(this);
         mBinding.setViewModel(viewModel);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
     }
 
     @Override

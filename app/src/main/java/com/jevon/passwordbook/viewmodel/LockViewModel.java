@@ -1,83 +1,65 @@
 package com.jevon.passwordbook.viewmodel;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
+import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.support.v4.os.CancellationSignal;
-import android.widget.Toast;
 
 import com.jevon.passwordbook.activity.MainActivity;
+import com.jevon.passwordbook.utils.Jtoast;
+import com.jevon.passwordbook.utils.SharedPreferenceUtils;
 
 import java.util.Objects;
 
-/**
- *
- */
 public class LockViewModel {
 
     private Activity mContext;
-    private SharedPreferences mSharedPreferences;
-    private SharedPreferences.Editor mEditor;
+    private SharedPreferenceUtils mSharedPreferences;
     private CancellationSignal cancellationSignal;
     public final ObservableField<String> psw = new ObservableField<>();
+    public final ObservableBoolean status = new ObservableBoolean();
 
-    @SuppressLint("CommitPrefEdits")
     public LockViewModel(Activity mContext) {
         this.mContext = mContext;
-        mSharedPreferences = mContext.getSharedPreferences("passwordbook", Context.MODE_PRIVATE);
-        mEditor = mSharedPreferences.edit();
-    }
+        mSharedPreferences = new SharedPreferenceUtils(mContext.getApplicationContext());
+        status.set(mSharedPreferences.getStatus());
 
-    /**
-     * 获取运行状态
-     *
-     * @return 是否已经设置密码
-     */
-    public boolean getStatus() {
-        boolean status = mSharedPreferences.getBoolean("status", false);
-        //启用指纹
-        if (status) {
+        if (status.get()) {
             FingerprintManagerCompat fingerprintManager = FingerprintManagerCompat.from(mContext);
             cancellationSignal = new CancellationSignal();
             fingerprintManager.authenticate(null, 0, cancellationSignal, new FingerCallback(mContext), null);
         }
-        return status;
     }
+
 
     /**
      * 确认按钮点击事件
-     *
-     * @param statu 运行状态
      */
-    public void onPositiveClick(boolean statu) {
+    public void onPositiveClick() {
         String password;
         if (psw.get() == null) {
             password = "";
         } else {
             password = Objects.requireNonNull(psw.get()).trim();
         }
-        if (!statu) {
+        if (!status.get()) {
             if (4 > password.length()) {
-                Toast.makeText(mContext, "密码长度不能小于四位", Toast.LENGTH_SHORT).show();
+                Jtoast.show("密码长度不能小于四位");
                 return;
             }
-            mEditor.putString("password", password);
-            mEditor.putBoolean("status", true);
-            mEditor.commit();
-            Toast.makeText(mContext, "密码设置成功，请牢记！", Toast.LENGTH_SHORT).show();
+            mSharedPreferences.putPassword(password);
+            mSharedPreferences.putStatus(true);
+            Jtoast.show("密码设置成功，请牢记！");
 
         } else {
-            if (password.equals("") || !password.equals(mSharedPreferences.getString("password", ""))) {
-                Toast.makeText(mContext, "密码错误！", Toast.LENGTH_LONG).show();
+            if (password.equals("") || !password.equals(mSharedPreferences.getPassword())) {
+                Jtoast.show("密码错误！");
                 return;
             }
         }
         mContext.startActivity(new Intent(mContext, MainActivity.class));
-        onDestroy();
         mContext.finish();
     }
 
@@ -85,7 +67,6 @@ public class LockViewModel {
      * 取消按钮点击事件
      */
     public void onCancelClick() {
-        onDestroy();
         mContext.finish();
     }
 

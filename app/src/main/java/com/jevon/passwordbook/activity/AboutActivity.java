@@ -1,13 +1,11 @@
 package com.jevon.passwordbook.activity;
 
-import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
-import android.net.Uri;
+import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -20,15 +18,15 @@ public class AboutActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        final ActivityAboutBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_about);
+        ActivityAboutBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_about);
 
         //设置Toolbar
         setSupportActionBar(binding.toolbarAbout);
         //设置ToolBar左侧的图标
-//        ActionBar actionBar = getSupportActionBar();
-//        if (actionBar != null) {
-//            actionBar.setDisplayHomeAsUpEnabled(true);
-//        }
+        ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+        }
 
         //设置显示版本号
         try {

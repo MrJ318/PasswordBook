@@ -5,7 +5,6 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.jevon.passwordbook.PasswordApplication;
 import com.jevon.passwordbook.been.Password;
 import com.jevon.passwordbook.utils.AesEncryptionUtils;
 import com.jevon.passwordbook.utils.DatabaseHelper;
@@ -13,7 +12,6 @@ import com.jevon.passwordbook.utils.FileUtils;
 import com.jevon.passwordbook.utils.Jlog;
 import com.jizhenhua.encryption.Encryption;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,16 +22,20 @@ import java.util.List;
 public class MainModel {
 
     private List<Password> allDataList;
-    private List<Password> serachList;
+    private List<Password> searchList;
 
     public MainModel() {
         allDataList = new ArrayList<>();
-        serachList = new ArrayList<>();
+        searchList = new ArrayList<>();
     }
 
-    //    获取全部数据
+    /**
+     * 从数据库中获取全部数据
+     *
+     * @return 数据集
+     */
     public List<Password> getDataFromDB() {
-        DatabaseHelper databaseHelper = new DatabaseHelper(PasswordApplication.getContext());
+        DatabaseHelper databaseHelper = new DatabaseHelper();
         allDataList.clear();
 
         Cursor cursor = databaseHelper.query();
@@ -47,12 +49,14 @@ public class MainModel {
             allDataList.add(new Password(name, id, psw, note));
         }
         databaseHelper.close();
-        serachList.addAll(allDataList);
+        // 将数据复制一份备用
+        searchList.clear();
+        searchList.addAll(allDataList);
         return allDataList;
     }
 
     /**
-     * 搜索方法
+     * 根据名称搜索
      *
      * @param item 搜索条件
      * @return 结果集
@@ -61,21 +65,30 @@ public class MainModel {
 
         allDataList.clear();
 
-        for (int i = 0; i < serachList.size(); i++) {
-            if (serachList.get(i).getName().contains(item)) {
-                allDataList.add(serachList.get(i));
+        if (item.equals("")) {
+            allDataList.addAll(searchList);
+            return allDataList;
+        }
+
+        for (int i = 0; i < searchList.size(); i++) {
+            if (searchList.get(i).getName().contains(item)) {
+                allDataList.add(searchList.get(i));
             }
         }
-        return serachList;
+        return allDataList;
     }
 
 
-    //    导入数据
+    /**
+     * 从外部存储导入数据
+     *
+     * @param path 数据库文件路径
+     * @return 导入数量
+     */
     public int readData(String path) {
 
         //打开备份数据库
         SQLiteDatabase sqLiteDatabase = SQLiteDatabase.openDatabase(path, null, SQLiteDatabase.OPEN_READONLY);
-        Jlog.d(path);
         @SuppressLint("Recycle") Cursor cursor = sqLiteDatabase.query(DatabaseHelper.TABLE_NAME, null,
                 null, null, null, null, null);
         //查看是否有数据
@@ -84,7 +97,7 @@ public class MainModel {
             return -1;
         }
 
-        DatabaseHelper databaseHelper = new DatabaseHelper(PasswordApplication.getContext());
+        DatabaseHelper databaseHelper = new DatabaseHelper();
         int count = 0;
 //        从备份数据库中逐条写入当前数据库
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()) {

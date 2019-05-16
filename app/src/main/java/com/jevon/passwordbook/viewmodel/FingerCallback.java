@@ -8,6 +8,7 @@ import android.support.v4.hardware.fingerprint.FingerprintManagerCompat;
 import android.widget.Toast;
 
 import com.jevon.passwordbook.activity.MainActivity;
+import com.jevon.passwordbook.utils.Jlog;
 
 public class FingerCallback extends FingerprintManagerCompat.AuthenticationCallback {
 
@@ -20,7 +21,7 @@ public class FingerCallback extends FingerprintManagerCompat.AuthenticationCallb
     @Override
     public void onAuthenticationError(int errMsgId, CharSequence errString) {
         super.onAuthenticationError(errMsgId, errString);
-
+        Jlog.d(errMsgId + ":" + errString);
         //errMagId = 5  取消监听
         //errMagId = 5  错误次数过多，30s后重试
         if (errMsgId != 5) {

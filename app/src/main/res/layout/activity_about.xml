@@ -5,7 +5,6 @@
 
     <data>
 
-
     </data>
 
     <RelativeLayout
@@ -18,10 +17,10 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:layout_alignParentTop="true"
-            android:background="?attr/colorPrimary"
-            app:title="关于"
+            android:background="@color/colorPrimary"
             android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
             app:popupTheme="@style/Theme.AppCompat.Light"
+            app:title="关于"
             tools:ignore="MissingConstraints" />
 
 
@@ -37,63 +36,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:src="@mipmap/ic_launcher" />
+                android:src="@mipmap/app_icon"
+                android:contentDescription="@string/contentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:text="@string/app_name"
-                android:textSize="30sp" />
+                android:textSize="28sp" />
 
             <TextView
                 android:id="@+id/text_version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="v1.0.0"
                 android:textSize="20sp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:text="@string/shuoming" />
+                android:text="@string/app_explain" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="@string/usenotice" />
+                android:text="@string/app_note" />
 
             <TextView
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="项目地址：" />
+                android:layout_marginTop="10dp"
+                android:text="@string/project_address_name" />
 
             <TextView
                 android:id="@+id/text_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:text="https://github.com/MrJ318/PasswordBook" />
+                android:text="@string/project_address_url" />
 
             <TextView
-                android:layout_marginTop="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="\n检查更新：" />
+                android:layout_marginTop="10dp"
+                android:text="@string/check_update" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:autoLink="web"
-                android:text="https://github.com/MrJ318/PasswordBook/tree/master/app/release" />
-
+                android:text="@string/check_update_address" />
 
         </LinearLayout>
-
-
     </RelativeLayout>
 </layout>

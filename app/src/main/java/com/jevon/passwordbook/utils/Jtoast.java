@@ -2,7 +2,7 @@ package com.jevon.passwordbook.utils;
 
 import android.widget.Toast;
 
-import com.jevon.passwordbook.PasswordApplication;
+import com.jevon.passwordbook.AppApplication;
 
 /**
  * @Author: Mr.J
@@ -10,6 +10,6 @@ import com.jevon.passwordbook.PasswordApplication;
  */
 public class Jtoast {
     public static void show(String msg) {
-        Toast.makeText(PasswordApplication.getContext(), msg, Toast.LENGTH_SHORT).show();
+        Toast.makeText(AppApplication.getInstance().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
     }
 }

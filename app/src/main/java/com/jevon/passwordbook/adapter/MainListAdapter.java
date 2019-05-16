@@ -1,5 +1,6 @@
 package com.jevon.passwordbook.adapter;
 
+import android.annotation.SuppressLint;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -45,6 +46,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
         return holder;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(@NonNull MainListAdapter.ViewHolder viewHolder, int i) {
         Password password = mList.get(i);
@@ -59,6 +61,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
 
         //设置查看按钮触摸事件
         final TextView tvPassword = binding.tvPassword;
+        tvPassword.setTransformationMethod(PasswordTransformationMethod.getInstance());
         binding.ivEye.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -69,6 +72,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
                 }
                 return true;
             }
+
         });
         binding.executePendingBindings();
     }
@@ -83,7 +87,7 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
 
         private ItemPasswordBinding binding;
 
-        public ViewHolder(@NonNull View itemView) {
+        ViewHolder(@NonNull View itemView) {
             super(itemView);
         }
 
@@ -95,4 +99,5 @@ public class MainListAdapter extends RecyclerView.Adapter<MainListAdapter.ViewHo
             this.binding = binding;
         }
     }
+
 }

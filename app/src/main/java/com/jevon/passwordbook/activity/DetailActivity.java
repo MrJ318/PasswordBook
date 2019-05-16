@@ -9,11 +9,11 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.jevon.passwordbook.R;
 import com.jevon.passwordbook.been.Password;
 import com.jevon.passwordbook.databinding.LayoutPasswordDetailBinding;
+import com.jevon.passwordbook.utils.Jtoast;
 import com.jevon.passwordbook.viewmodel.PasswordDetailVM;
 
 /**
@@ -23,7 +23,6 @@ import com.jevon.passwordbook.viewmodel.PasswordDetailVM;
 public class DetailActivity extends AppCompatActivity {
 
     private PasswordDetailVM vm;
-    private AlertDialog.Builder builder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +37,7 @@ public class DetailActivity extends AppCompatActivity {
         Password password = (Password) intent.getSerializableExtra("item");
 
         //获取ViewModel实例，设置相关参数
-        vm = PasswordDetailVM.getInstance();
+        vm = PasswordDetailVM.getInstance(getApplicationContext());
         vm.setActivity(PasswordDetailVM.ACTIVITY_DETAIL);
         //将获取到的账号密码实体交给VM
         vm.setPassword(password);
@@ -58,9 +57,6 @@ public class DetailActivity extends AppCompatActivity {
 
         //设置名称不可更改
         binding.editDetailName.setFocusable(false);
-
-        //创建dialog
-        builder = new AlertDialog.Builder(this);
     }
 
     @Override
@@ -79,13 +75,14 @@ public class DetailActivity extends AppCompatActivity {
                 vm.setActivity(PasswordDetailVM.ACTIVITY_EDIT);
                 break;
             case R.id.menu_delete:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setMessage("确定要删除" + vm.getPassword().getName() + "吗?");
                 builder.setNegativeButton("取消", null);
                 builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (vm.deleteData() > 0) {
-                            Toast.makeText(DetailActivity.this, "删除成功！", Toast.LENGTH_SHORT).show();
+                            Jtoast.show("删除成功");
                             finish();
                         }
                     }

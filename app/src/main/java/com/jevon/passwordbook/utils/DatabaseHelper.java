@@ -1,10 +1,11 @@
 package com.jevon.passwordbook.utils;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.jevon.passwordbook.AppApplication;
 
 /**
  * @Author: Mr.J
@@ -16,8 +17,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase db;
 
-    public DatabaseHelper(Context context) {
-        super(context, "PasswordData.db", null, 1);
+    public DatabaseHelper() {
+        super(AppApplication.getInstance().getApplicationContext(), "PasswordData.db", null, 1);
         db = this.getWritableDatabase();
     }
 
@@ -57,11 +58,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public Cursor query(String name) {
         return db.query(TABLE_NAME, null, "name=?", new String[]{name}, null, null, null);
-    }
-
-
-    public boolean isOpen() {
-        return isOpen();
     }
 
     public void close() {

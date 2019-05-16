@@ -20,7 +20,7 @@ public class InsertActivity extends AppCompatActivity {
 
         initBar(binding);
 
-        PasswordDetailVM vm = PasswordDetailVM.getInstance();
+        PasswordDetailVM vm = PasswordDetailVM.getInstance(getApplicationContext());
         vm.setActivity(PasswordDetailVM.ACTIVITY_INSERT);
         vm.setPassword(new Password());
         binding.setItem(vm.getPassword());
@@ -37,7 +37,6 @@ public class InsertActivity extends AppCompatActivity {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setTitle("添加");
         }
-
     }
 
     @Override

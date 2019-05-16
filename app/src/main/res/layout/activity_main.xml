@@ -6,7 +6,7 @@
     <data>
 
         <variable
-            name="viewmodel"
+            name="vm"
             type="com.jevon.passwordbook.viewmodel.MainViewModel" />
 
         <variable
@@ -31,9 +31,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:layout_alignParentTop="true"
-                android:background="?attr/colorPrimary"
-                app:navigationIcon="@drawable/menu"
+                android:background="@color/colorPrimary"
                 android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:navigationIcon="@drawable/toolbar_menu"
                 app:popupTheme="@style/Theme.AppCompat.Light"
                 tools:ignore="MissingConstraints">
 
@@ -41,16 +41,22 @@
                     android:id="@+id/search_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="right"
+                    android:layout_gravity="end"
                     android:imeOptions="actionSearch" />
             </android.support.v7.widget.Toolbar>
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/recyclerview"
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/layout_refresh"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@id/toolbar_main"
-                android:adapter="@{viewmodel.adapter}" />
+                android:layout_below="@id/toolbar_main">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_View"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:adapter="@{vm.adapter}" />
+            </android.support.v4.widget.SwipeRefreshLayout>
 
             <TextView
                 android:id="@+id/empty_title"
@@ -58,20 +64,21 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:text="没有数据!"
+                android:text="@string/no_date"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                android:visibility="@{viewmodel.listSize>0?view.GONE:view.VISIBLE}" />
+                android:visibility="@{vm.listSize>0?view.GONE:view.VISIBLE}" />
 
-            <ImageView
-                android:id="@+id/imga"
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/fab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="20dp"
-                android:background="@drawable/ic_add"
-                android:onClick="@{()->viewmodel.addItem()}" />
+                android:onClick="@{(v)->vm.buttonClick(v)}"
+                android:src="@drawable/main_fab" />
+
         </RelativeLayout>
 
 
@@ -79,7 +86,7 @@
             android:layout_width="250dp"
             android:layout_height="match_parent"
             android:layout_gravity="start"
-            android:background="#e6e6e6"
+            android:background="@color/drawer_bg"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -92,7 +99,8 @@
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/github" />
+                    android:contentDescription="@string/contentDescription"
+                    android:src="@drawable/drawer_head" />
 
             </RelativeLayout>
 
@@ -100,29 +108,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:text="数据"
+                android:text="@string/date"
                 android:textColor="@color/colorPrimary" />
 
             <LinearLayout
                 android:id="@+id/layout_clear_data"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_selector"
+                android:background="@drawable/bg_drawer_item"
                 android:gravity="center_vertical"
-                android:onClick="@{()->viewmodel.deleteAllData()}"
+                android:onClick="@{(v)->vm.buttonClick(v)}"
                 android:orientation="horizontal"
-                android:padding="@dimen/activity_horizontal_margin">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/set_deleteall" />
+                android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:text="清空数据" />
+                    android:layout_marginStart="5dp"
+                    android:drawableStart="@drawable/drawer_clean"
+                    android:gravity="center"
+                    android:text="@string/clean_date" />
             </LinearLayout>
 
             <View
@@ -134,22 +139,19 @@
                 android:id="@+id/layout_backup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_selector"
+                android:background="@drawable/bg_drawer_item"
                 android:gravity="center_vertical"
-                android:onClick="@{(v)->viewmodel.requestPermission(v)}"
+                android:onClick="@{(v)->vm.buttonClick(v)}"
                 android:orientation="horizontal"
-                android:padding="@dimen/activity_horizontal_margin">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/set_backup" />
+                android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:text="备份数据" />
+                    android:layout_marginStart="5dp"
+                    android:drawableStart="@drawable/drawer_backup"
+                    android:gravity="center"
+                    android:text="@string/backups_date" />
             </LinearLayout>
 
             <View
@@ -161,52 +163,45 @@
                 android:id="@+id/layout_import"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_selector"
+                android:background="@drawable/bg_drawer_item"
                 android:gravity="center_vertical"
-                android:onClick="@{(v)->viewmodel.requestPermission(v)}"
+                android:onClick="@{(v)->vm.buttonClick(v)}"
                 android:orientation="horizontal"
-                android:padding="@dimen/activity_horizontal_margin">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/set_import" />
+                android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:text="导入数据" />
+                    android:layout_marginStart="5dp"
+                    android:drawableStart="@drawable/drawer_import"
+                    android:gravity="center"
+                    android:text="@string/import_date" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/activity_horizontal_margin"
                 android:padding="@dimen/activity_horizontal_margin"
-                android:text="其他"
+                android:text="@string/other"
                 android:textColor="@color/colorPrimary" />
 
             <LinearLayout
                 android:id="@+id/layout_modify_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_selector"
+                android:background="@drawable/bg_drawer_item"
                 android:gravity="center_vertical"
-                android:onClick="@{()->viewmodel.change()}"
+                android:onClick="@{(v)->vm.buttonClick(v)}"
                 android:orientation="horizontal"
-                android:padding="@dimen/activity_horizontal_margin">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/set_change" />
+                android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:text="修改密码" />
+                    android:layout_marginStart="5dp"
+                    android:drawableStart="@drawable/drawer_modify"
+                    android:gravity="center"
+                    android:text="@string/modify_password" />
             </LinearLayout>
 
             <View
@@ -218,22 +213,20 @@
                 android:id="@+id/layout_about"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/button_selector"
+                android:background="@drawable/bg_drawer_item"
                 android:gravity="center_vertical"
-                android:onClick="@{()->viewmodel.about()}"
+                android:onClick="@{(v)->vm.buttonClick(v)}"
                 android:orientation="horizontal"
-                android:padding="@dimen/activity_horizontal_margin">
+                android:padding="10dp">
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/set_about" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                    android:text="关于" />
+                    android:layout_marginStart="5dp"
+                    android:drawableStart="@drawable/drawer_about"
+                    android:gravity="center"
+                    android:text="@string/about" />
             </LinearLayout>
         </LinearLayout>
 

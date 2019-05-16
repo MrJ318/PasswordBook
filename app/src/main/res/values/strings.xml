@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">密码本</string>
     <string name="version">V %1$s</string>
+    <string name="contentDescription">contentDescription</string>
+
     <!--LockActivity-->
     <string name="password">密码</string>
     <string name="positive">确认</string>
@@ -14,7 +16,27 @@
     <string name="password_id">账号</string>
     <string name="password_note">备注</string>
 
-    <string name="shuoming">软件说明：\n本软件用于存储各类账号密码,使用方便，管理简单\n</string>
-    <string name="usenotice">注意事项：\n本软件适合存储各种网站、论坛的账号密码，请不要存储网银、支付宝等重要密码\n</string>
+    <!--AboutActivity-->
+    <string name="project_address_name">项目地址：</string>
+    <string name="project_address_url">https://github.com/MrJ318/PasswordBook</string>
+    <string name="check_update">检查更新：</string>
+    <string name="check_update_address">https://github.com/MrJ318/PasswordBook/tree/master/app/release</string>
+    <string name="app_explain">软件说明：\n本软件用于存储各类账号密码,使用方便，管理简单\n</string>
+    <string name="app_note">注意事项：\n本软件适合存储各种网站、论坛的账号密码，请不要存储网银、支付宝等重要密码\n</string>
+
+    <!--MainActivity-->
+    <string name="password_old">原密码</string>
+    <string name="password_new">新密码</string>
+    <string name="password_confirm">确认密码</string>
+
+    <string name="clean_date"> &#160;&#160;&#160;&#160;清空数据</string>
+    <string name="import_date">&#160;&#160;&#160;&#160;导入数据</string>
+    <string name="backups_date">&#160;&#160;&#160;&#160;备份数据</string>
+    <string name="modify_password">&#160;&#160;&#160;&#160;修改密码</string>
+    <string name="about">&#160;&#160;&#160;&#160;关于</string>
+    <string name="date">数据</string>
+    <string name="other">其他</string>
+    <string name="no_date">没有数据!</string>
+
 
 </resources>
